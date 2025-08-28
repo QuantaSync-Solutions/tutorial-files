@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QSync Solutions – Code. Connect. Secure.</title>
+  <meta name="description" content="Downloads, Ressourcen und Tutorials von QSync Solutions: Programmierung, Datenbanken, Netzwerke, Cloud & Security." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-0:#0D0C0D;          /* dein Dark-Background */
+      --bg-1:#121214;
+      --bg-2:#17181B;          /* Karten-Hintergrund */
+      --text:#ECEDEF;          /* Primär-Text */
+      --muted:#B5BAC1;         /* Sekundär-Text */
+      --brand:#0A84FF;         /* Q-Blau */
+      --brand-2:#00BFFF;       /* heller Akzent */
+      --accent:#24D1FF;        /* optionaler Akzent */
+      --radius:16px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --grid: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(10,132,255,.18), transparent 60%),
+                  radial-gradient(1000px 600px at 100% 10%, rgba(36,209,255,.12), transparent 55%),
+                  linear-gradient(180deg,var(--bg-0),var(--bg-1));
+      color:var(--text);
+      line-height:1.6;
+    }
+    /* Subtle animated grid */
+    .grid-overlay{
+      position:fixed; inset:0; pointer-events:none; opacity:.25; mask-image: radial-gradient(closest-side at 50% 20%, black 60%, transparent);
+      background-image:
+        linear-gradient(0deg, var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px;
+      animation: drift 30s linear infinite;
+    }
+    @keyframes drift{ from{background-position:0 0,0 0} to{background-position:0 40px,40px 0} }
+
+    .container{max-width:1080px; margin:0 auto; padding:28px 20px 80px}
+    header{display:flex; justify-content:space-between; align-items:center; gap:16px; padding:8px 0}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text)}
+    .logo{
+      width:44px; height:44px; border-radius:12px;
+      display:grid; place-items:center;
+      background: radial-gradient(120% 120% at 30% 30%, #1aa7ff, #0A84FF 60%, #0066cc 100%);
+      box-shadow:0 6px 24px rgba(10,132,255,.45), inset 0 0 12px rgba(255,255,255,.12);
+      font-weight:800; letter-spacing:.5px;
+    }
+    nav a{color:var(--muted); text-decoration:none; margin-left:18px; font-weight:600}
+    nav a:hover{color:var(--text)}
+
+    .hero{display:grid; grid-template-columns: 1.15fr .85fr; gap:34px; align-items:center; padding:40px 0 20px}
+    .hero h1{font-size: clamp(28px, 5vw, 44px); line-height:1.1; margin:0 0 12px; font-weight:800}
+    .hero p{font-size: clamp(15px, 1.8vw, 18px); color:var(--muted); margin:0 0 22px}
+    .cta{display:flex; flex-wrap:wrap; gap:12px}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700}
+    .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:white; box-shadow: var(--shadow)}
+    .btn-ghost{border:1px solid rgba(255,255,255,.12); color:var(--text);}
+    .btn:hover{transform:translateY(-1px)}
+
+    .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:28px}
+    .card{background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding:18px; box-shadow: var(--shadow)}
+    .card h3{margin:6px 0 8px; font-size:18px}
+    .card p{margin:0; color:var(--muted)}
+
+    .section{margin-top:56px}
+    .section h2{font-size:26px; margin:0 0 12px}
+    .downloads{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .dl{background:var(--bg-2); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:16px}
+    .dl strong{display:block; margin-bottom:6px}
+
+    footer{margin-top:80px; padding-top:32px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted); font-size:14px}
+
+    /* responsiveness */
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr}
+      .card-grid{grid-template-columns:1fr}
+      .downloads{grid-template-columns:1fr}
+      nav{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="container">
+    <header>
+      <a class="brand" href="#">
+        <div class="logo">Q</div>
+        <div>
+          <div style="font-weight:800; letter-spacing:.2px">QSync Solutions</div>
+          <div style="color:var(--muted); font-size:12px; margin-top:-2px">Code · Connect · Secure</div>
+        </div>
+      </a>
+      <nav>
+        <a href="#downloads">Downloads</a>
+        <a href="#tutorials">Tutorials</a>
+        <a href="https://github.com/QuantaSync-Solutions/tutorial-files" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Downloads & Ressourcen für deine IT-Reise</h1>
+        <p>Alles, was du für die QSync Tutorials brauchst: Beispielcode, Projektdateien und Schritt‑für‑Schritt‑Guides zu Programmierung, Datenbanken, Netzwerken, Cloud & Security.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/QuantaSync-Solutions/tutorial-files/releases/latest" target="_blank" rel="noopener">⬇️ Neueste Dateien (Release)</a>
+          <a class="btn btn-ghost" href="#tutorials">▶️ Zu den Tutorials</a>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <h3>🚀 Schnellstart</h3>
+            <p>Linux‑VM Setup, Developer‑Tools und erste Schritte – in wenigen Minuten startklar.</p>
+          </article>
+          <article class="card">
+            <h3>⚙️ Projekte</h3>
+            <p>Web‑Apps, Datenbanken, Network‑Labs & Cloud‑Deployments – sauber dokumentiert.</p>
+          </article>
+          <article class="card">
+            <h3>🔒 Best Practices</h3>
+            <p>Security‑Basics, sichere Defaults und nützliche Checklisten für deine Umgebungen.</p>
+          </article>
+        </div>
+      </div>
+      <div aria-hidden="true">
+        <!-- simple decorative panel -->
+        <svg viewBox="0 0 400 480" width="100%" height="auto" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,.6));">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#0A84FF"/>
+              <stop offset="1" stop-color="#00BFFF"/>
+            </linearGradient>
+          </defs>
+          <rect x="20" y="20" width="360" height="440" rx="22" fill="url(#g)" opacity=".12" stroke="#1495ff33" />
+          <g opacity=".6" stroke="#ffffff18">
+            <circle cx="200" cy="120" r="68" fill="#0A84FF18" />
+            <rect x="80" y="220" width="240" height="60" rx="10" />
+            <rect x="80" y="300" width="240" height="60" rx="10" />
+            <rect x="80" y="380" width="160" height="40" rx="10" />
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section id="downloads" class="section">
+      <h2>Direkt‑Downloads</h2>
+      <div class="downloads">
+        <div class="dl">
+          <strong>Tutorial Files (ZIP)</strong>
+          <div style="color:var(--muted); margin:6px 0 10px;">Alle begleitenden Dateien in einem Paket.</div>
+          <a class="btn btn-primary" href="https://github.com/QuantaSync-Solutions/tutorial-files/releases/latest/download/TutorialFiles.zip" target="_blank" rel="noopener">⬇️ Download</a>
+        </div>
+        <div class="dl">
+          <strong>Linux VM Guide (PDF)</strong>
+          <div style="color:var(--muted); margin:6px 0 10px;">Kurz & bündig: Setup, Befehle, Troubleshooting.</div>
+          <a class="btn btn-ghost" href="#" onclick="alert('Füge hier später deinen PDF-Link ein.'); return false;">📄 Bald verfügbar</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="tutorials" class="section">
+      <h2>Tutorial‑Serien</h2>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Linux Basics</h3>
+          <p>VM einrichten, Terminal‑Basics, Nutzer & Rechte, Netzwerk.</p>
+        </article>
+        <article class="card">
+          <h3>Datenbanken</h3>
+          <p>MySQL/MariaDB Installation, SQL‑Basics, Mini‑Web‑App.</p>
+        </article>
+        <article class="card">
+          <h3>Networking & CCNA</h3>
+          <p>Ping, Traceroute, Subnetting, Packet Tracer Labs.</p>
+        </article>
+        <article class="card">
+          <h3>Cloud Basics</h3>
+          <p>AWS/Azure – Instanzen, Storage, Sicherheit & IAM.</p>
+        </article>
+        <article class="card">
+          <h3>Security Essentials</h3>
+          <p>SSH‑Hardening, UFW, Fail2ban, grundlegendes Hardening.</p>
+        </article>
+        <article class="card">
+          <h3>Web‑Projekte</h3>
+          <p>HTML/CSS/JS Basics, PHP & MySQL, kleine Deployments.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 QSync Solutions • <a href="https://github.com/QuantaSync-Solutions/tutorial-files" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:none">GitHub</a>
+    </footer>
+  </div>
+</body>
+</html>
