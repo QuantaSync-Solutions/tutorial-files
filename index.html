@@ -9,14 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* =====================
+       Design Tokens
+    ====================== */
     :root{
-      --bg-0:#0B0C0F; /* Dunkel */
-      --bg-1:#101216; /* etwas heller */
-      --bg-2:#0F1420; /* bläuliches Dark */
-      --text:#ECEEF1;
-      --muted:#B5BAC1;
-      --brand:#0A84FF;      /* Q-Blau */
-      --brand-2:#00BFFF;    /* heller Akzent */
+      --bg-0:#0A0C10;  /* Grund-Dark */
+      --bg-1:#0D1117;  /* Github‑like depth */
+      --text:#EAEFF6;
+      --muted:#AFB6C2;
+      --brand:#0A84FF;      /* Q‑Blau */
+      --brand-2:#2AD3FF;    /* helles Blau */
       --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
     }
@@ -29,26 +31,46 @@
       overflow-x:hidden;
     }
 
-    /* ====== Hintergrund: sanfte, animierte Farb-Blobs ====== */
-    .bg-anim{position:fixed; inset:-20vh -20vw; z-index:-1; filter:saturate(115%) blur(30px); opacity:.65}
-    .blob{position:absolute; width:60vmax; height:60vmax; border-radius:50%; mix-blend-mode:screen}
-    .b1{background:radial-gradient(circle at 30% 30%, #0A84FF, transparent 55%); left:-10vmax; top:-10vmax; animation: drift1 30s ease-in-out infinite alternate}
-    .b2{background:radial-gradient(circle at 70% 40%, #00BFFF, transparent 55%); right:-15vmax; top:-5vmax; animation: drift2 36s ease-in-out infinite alternate}
-    .b3{background:radial-gradient(circle at 40% 60%, #2ad3ff, transparent 60%); left:10vmax; bottom:-15vmax; animation: drift3 42s ease-in-out infinite alternate}
-    @keyframes drift1{from{transform:translate3d(0,0,0)}to{transform:translate3d(6vmax,4vmax,0)}}
-    @keyframes drift2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-5vmax,3vmax,0)}}
-    @keyframes drift3{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-6vmax,0)}}
-
-    /* Feines Grid als Overlay */
-    .grid{position:fixed; inset:0; pointer-events:none; opacity:.18; background-size:36px 36px; background-image:
-      linear-gradient(0deg, rgba(255,255,255,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-      mask-image: radial-gradient(closest-side at 50% 25%, black 65%, transparent);
-      animation: gridMove 24s linear infinite
+    /* =====================
+       High‑quality Background
+       - Layered radial gradients (no banding)
+       - Vignette + subtle noise texture
+       - Ultra‑subtle animated blobs
+    ====================== */
+    .scene{position:fixed; inset:0; z-index:-2;}
+    .sky{position:absolute; inset:-15% -15%;
+      background:
+        radial-gradient(1000px 600px at 15% 10%, #0d5fff18 0%, transparent 60%),
+        radial-gradient(1200px 800px at 85% 20%, #1fb8ff14 0%, transparent 60%),
+        radial-gradient(1400px 900px at 50% 120%, #0a84ff12 0%, transparent 65%),
+        linear-gradient(180deg, var(--bg-1), #0B0D12 70%, #090B0F 100%);
+      filter: saturate(110%);
     }
-    @keyframes gridMove{from{background-position:0 0,0 0}to{background-position:0 36px,36px 0}}
+    /* Vignette */
+    .vignette{position:absolute; inset:0; pointer-events:none; background:radial-gradient(100% 140% at 50% 0%, transparent 0 55%, rgba(0,0,0,.35) 100%);}    
+    /* Film‑noise to kill gradient banding (base64 tiny SVG) */
+    .noise{position:absolute; inset:0; pointer-events:none; opacity:.08; mix-blend-mode:overlay;
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.35"/></svg>');
+      background-size:160px 160px;
+    }
+    /* Animated blobs (very gentle) */
+    .blob{position:absolute; width:65vmax; height:65vmax; border-radius:50%; filter:blur(40px) saturate(120%); opacity:.5; mix-blend-mode:screen}
+    .b1{left:-10vmax; top:-6vmax; background:radial-gradient(circle at 30% 30%, #0A84FF, transparent 60%); animation: drift1 36s ease-in-out infinite alternate}
+    .b2{right:-15vmax; top:-2vmax; background:radial-gradient(circle at 70% 40%, #2AD3FF, transparent 60%); animation: drift2 44s ease-in-out infinite alternate}
+    .b3{left:5vmax; bottom:-18vmax; background:radial-gradient(circle at 40% 60%, #0fb8ff, transparent 65%); animation: drift3 52s ease-in-out infinite alternate}
+    @keyframes drift1{from{transform:translate3d(0,0,0)}to{transform:translate3d(5vmax,3vmax,0)}}
+    @keyframes drift2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-4vmax,3vmax,0)}}
+    @keyframes drift3{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-5vmax,0)}}
 
-    .container{max-width:1120px; margin:0 auto; padding:28px 20px}
+    /* Subtle grid for depth */
+    .grid{position:fixed; inset:0; pointer-events:none; opacity:.12; background-size:36px 36px; background-image:
+      linear-gradient(0deg, rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      mask-image: radial-gradient(closest-side at 50% 20%, black 60%, transparent);
+    }
+
+    /* =====================  Layout  ===================== */
+    .container{max-width:1100px; margin:0 auto; padding:28px 20px}
 
     header{display:flex; justify-content:space-between; align-items:center; gap:16px; padding:10px 0}
     .brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--text)}
@@ -59,11 +81,10 @@
     nav a{color:var(--muted); text-decoration:none; margin-left:18px; font-weight:600}
     nav a:hover{color:var(--text)}
 
-    /* ===== Sektionen mit sanften Übergängen ===== */
-    section{position:relative; padding:64px 0}
-    .seg{position:absolute; left:0; right:0; height:120px; pointer-events:none}
-    .seg.top{top:-60px; background:linear-gradient(to bottom, transparent 0%, rgba(255,255,255,.05) 60%, transparent 100%); filter:blur(20px); opacity:.5}
-    .seg.bot{bottom:-60px; background:linear-gradient(to top, transparent 0%, rgba(255,255,255,.05) 60%, transparent 100%); filter:blur(20px); opacity:.5}
+    /* Section wrapper – one continuous background, elegant separators */
+    section{position:relative; padding:72px 0}
+    .divider{height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent); filter:blur(.3px); opacity:.6}
+    .spacer{height:56px}
 
     .hero-grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:34px; align-items:center}
     h1{font-size: clamp(28px, 5vw, 46px); line-height:1.1; margin:0 0 14px; font-weight:800}
@@ -74,25 +95,19 @@
     .btn-ghost{border:1px solid rgba(255,255,255,.12); color:var(--text)}
     .btn:hover{transform:translateY(-1px)}
 
+    /* Cards (glass) */
     .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:28px}
-    .card{background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding:18px; box-shadow: var(--shadow)}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:18px; box-shadow: var(--shadow); backdrop-filter: blur(6px)}
     .card h3{margin:6px 0 8px; font-size:18px}
     .card p{margin:0; color:var(--muted)}
 
-    /* Features – leicht heller Blaustich */
-    .section-features{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(10,132,255,.06) 120%)}
-
-    /* Downloads – bläuliche Fläche */
-    .section-downloads{background:linear-gradient(180deg, #0B0C0F, #0F1420)}
+    /* Downloads */
     .downloads{display:grid; grid-template-columns:1fr 1fr; gap:16px}
-    .dl{background:#111621; border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:16px}
+    .dl{background:linear-gradient(180deg, rgba(15,20,32,.9), rgba(15,20,32,.7)); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:16px; box-shadow: var(--shadow)}
     .dl strong{display:block; margin-bottom:6px}
 
-    /* Tutorials – zurück ins dunklere */
-    .section-tutorials{background:linear-gradient(180deg, #0F1420, #0B0C0F)}
-
-    footer{padding:36px 20px; color:var(--muted); font-size:14px; border-top:1px solid rgba(255,255,255,.08); text-align:center}
+    footer{padding:40px 20px; color:var(--muted); font-size:14px; border-top:1px solid rgba(255,255,255,.08); text-align:center}
 
     /* Responsiv */
     @media (max-width: 900px){
@@ -105,11 +120,14 @@
   </style>
 </head>
 <body>
-  <!-- Animierter Hintergrund -->
-  <div class="bg-anim" aria-hidden="true">
+  <!-- High-quality layered background -->
+  <div class="scene" aria-hidden="true">
+    <div class="sky"></div>
     <div class="blob b1"></div>
     <div class="blob b2"></div>
     <div class="blob b3"></div>
+    <div class="vignette"></div>
+    <div class="noise"></div>
   </div>
   <div class="grid" aria-hidden="true"></div>
 
@@ -117,7 +135,7 @@
   <div class="container">
     <header>
       <a class="brand" href="#">
-        <!-- Logo allein (transparenter PNG oder SVG empfohlen) -->
+        <!-- Logo (transparent PNG/SVG) -->
         <img class="logo" src="assets/Logo_transparent.png" alt="QSync Logo">
         <div>
           <div class="title">QSync Solutions</div>
@@ -134,7 +152,6 @@
 
   <!-- HERO -->
   <section>
-    <span class="seg top"></span>
     <div class="container">
       <div class="hero-grid">
         <div>
@@ -146,8 +163,8 @@
           </div>
         </div>
         <div aria-hidden="true">
-          <!-- Feature-Karte rechts: schlicht, ohne Logo-Hintergrund -->
-          <div style="background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding:22px; box-shadow: var(--shadow); max-width:420px; margin:0 auto;">
+          <!-- Minimal Feature-Card -->
+          <div class="card" style="max-width:420px; margin:0 auto">
             <div style="width:92px;height:92px;border-radius:50%; margin:8px auto 16px; background:radial-gradient(#0A84FF,#003e7a); opacity:.9;"></div>
             <div style="height:14px;border-radius:8px;background:#0f1114;margin:10px 0"></div>
             <div style="height:14px;border-radius:8px;background:#0f1114;margin:10px 0"></div>
@@ -157,12 +174,11 @@
         </div>
       </div>
     </div>
-    <span class="seg bot"></span>
+    <div class="container"><div class="spacer"></div><div class="divider"></div></div>
   </section>
 
   <!-- FEATURES -->
-  <section class="section-features">
-    <span class="seg top"></span>
+  <section>
     <div class="container">
       <div class="card-grid">
         <article class="card">
@@ -179,12 +195,11 @@
         </article>
       </div>
     </div>
-    <span class="seg bot"></span>
+    <div class="container"><div class="spacer"></div><div class="divider"></div></div>
   </section>
 
   <!-- DOWNLOADS -->
-  <section id="downloads" class="section-downloads">
-    <span class="seg top"></span>
+  <section id="downloads">
     <div class="container">
       <h2 style="margin:0 0 12px">Direkt‑Downloads</h2>
       <div class="downloads">
@@ -200,12 +215,11 @@
         </div>
       </div>
     </div>
-    <span class="seg bot"></span>
+    <div class="container"><div class="spacer"></div><div class="divider"></div></div>
   </section>
 
   <!-- TUTORIALS -->
-  <section id="tutorials" class="section-tutorials">
-    <span class="seg top"></span>
+  <section id="tutorials">
     <div class="container">
       <h2 style="margin:0 0 12px">Tutorial‑Serien</h2>
       <div class="card-grid">
@@ -235,7 +249,7 @@
         </article>
       </div>
     </div>
-    <span class="seg bot"></span>
+    <div class="container"><div class="spacer"></div><div class="divider"></div></div>
   </section>
 
   <footer>
