@@ -10,143 +10,183 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg-0:#0D0C0D;          /* dein Dark-Background */
-      --bg-1:#121214;
-      --bg-2:#17181B;          /* Karten-Hintergrund */
-      --text:#ECEDEF;          /* Primär-Text */
-      --muted:#B5BAC1;         /* Sekundär-Text */
-      --brand:#0A84FF;         /* Q-Blau */
-      --brand-2:#00BFFF;       /* heller Akzent */
-      --accent:#24D1FF;        /* optionaler Akzent */
-      --radius:16px;
+      --bg-0:#0B0C0F; /* Dunkel */
+      --bg-1:#101216; /* etwas heller */
+      --bg-2:#0F1420; /* bläuliches Dark */
+      --text:#ECEEF1;
+      --muted:#B5BAC1;
+      --brand:#0A84FF;      /* Q-Blau */
+      --brand-2:#00BFFF;    /* heller Akzent */
+      --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
-      --grid: rgba(255,255,255,0.04);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background: radial-gradient(1200px 800px at 10% -10%, rgba(10,132,255,.18), transparent 60%),
-                  radial-gradient(1000px 600px at 100% 10%, rgba(36,209,255,.12), transparent 55%),
-                  linear-gradient(180deg,var(--bg-0),var(--bg-1));
-      color:var(--text);
-      line-height:1.6;
+      color:var(--text); line-height:1.6; background:var(--bg-0);
+      overflow-x:hidden;
     }
-    /* Subtle animated grid */
-    .grid-overlay{
-      position:fixed; inset:0; pointer-events:none; opacity:.25; mask-image: radial-gradient(closest-side at 50% 20%, black 60%, transparent);
-      background-image:
-        linear-gradient(0deg, var(--grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-      background-size: 40px 40px, 40px 40px;
-      animation: drift 30s linear infinite;
-    }
-    @keyframes drift{ from{background-position:0 0,0 0} to{background-position:0 40px,40px 0} }
 
-    .container{max-width:1080px; margin:0 auto; padding:28px 20px 80px}
-    header{display:flex; justify-content:space-between; align-items:center; gap:16px; padding:8px 0}
-    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text)}
-    .logo{
-      width:104px; height:104px; border-radius:12px;
-      display:grid; place-items:center;
-      background: radial-gradient(120% 120% at 30% 30%, #1aa7ff, #0A84FF 60%, #0066cc 100%);
-      box-shadow:0 6px 24px rgba(10,132,255,.45), inset 0 0 12px rgba(255,255,255,.12);
-      font-weight:800; letter-spacing:.5px;
+    /* ====== Hintergrund: sanfte, animierte Farb-Blobs ====== */
+    .bg-anim{position:fixed; inset:-20vh -20vw; z-index:-1; filter:saturate(115%) blur(30px); opacity:.65}
+    .blob{position:absolute; width:60vmax; height:60vmax; border-radius:50%; mix-blend-mode:screen}
+    .b1{background:radial-gradient(circle at 30% 30%, #0A84FF, transparent 55%); left:-10vmax; top:-10vmax; animation: drift1 30s ease-in-out infinite alternate}
+    .b2{background:radial-gradient(circle at 70% 40%, #00BFFF, transparent 55%); right:-15vmax; top:-5vmax; animation: drift2 36s ease-in-out infinite alternate}
+    .b3{background:radial-gradient(circle at 40% 60%, #2ad3ff, transparent 60%); left:10vmax; bottom:-15vmax; animation: drift3 42s ease-in-out infinite alternate}
+    @keyframes drift1{from{transform:translate3d(0,0,0)}to{transform:translate3d(6vmax,4vmax,0)}}
+    @keyframes drift2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-5vmax,3vmax,0)}}
+    @keyframes drift3{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-6vmax,0)}}
+
+    /* Feines Grid als Overlay */
+    .grid{position:fixed; inset:0; pointer-events:none; opacity:.18; background-size:36px 36px; background-image:
+      linear-gradient(0deg, rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      mask-image: radial-gradient(closest-side at 50% 25%, black 65%, transparent);
+      animation: gridMove 24s linear infinite
     }
+    @keyframes gridMove{from{background-position:0 0,0 0}to{background-position:0 36px,36px 0}}
+
+    .container{max-width:1120px; margin:0 auto; padding:28px 20px}
+
+    header{display:flex; justify-content:space-between; align-items:center; gap:16px; padding:10px 0}
+    .brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--text)}
+    .logo{width:56px; height:56px; object-fit:contain}
+    .title{font-weight:800; letter-spacing:.2px}
+    .subtitle{color:var(--muted); font-size:12px; margin-top:-2px}
+
     nav a{color:var(--muted); text-decoration:none; margin-left:18px; font-weight:600}
     nav a:hover{color:var(--text)}
 
-    .hero{display:grid; grid-template-columns: 1.15fr .85fr; gap:34px; align-items:center; padding:40px 0 20px}
-    .hero h1{font-size: clamp(28px, 5vw, 44px); line-height:1.1; margin:0 0 12px; font-weight:800}
-    .hero p{font-size: clamp(15px, 1.8vw, 18px); color:var(--muted); margin:0 0 22px}
+    /* ===== Sektionen mit sanften Übergängen ===== */
+    section{position:relative; padding:64px 0}
+    .seg{position:absolute; left:0; right:0; height:120px; pointer-events:none}
+    .seg.top{top:-60px; background:linear-gradient(to bottom, transparent 0%, rgba(255,255,255,.05) 60%, transparent 100%); filter:blur(20px); opacity:.5}
+    .seg.bot{bottom:-60px; background:linear-gradient(to top, transparent 0%, rgba(255,255,255,.05) 60%, transparent 100%); filter:blur(20px); opacity:.5}
+
+    .hero-grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:34px; align-items:center}
+    h1{font-size: clamp(28px, 5vw, 46px); line-height:1.1; margin:0 0 14px; font-weight:800}
+    .lead{font-size: clamp(15px, 1.8vw, 18px); color:var(--muted); margin:0 0 22px}
     .cta{display:flex; flex-wrap:wrap; gap:12px}
     .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700}
     .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:white; box-shadow: var(--shadow)}
-    .btn-ghost{border:1px solid rgba(255,255,255,.12); color:var(--text);}
+    .btn-ghost{border:1px solid rgba(255,255,255,.12); color:var(--text)}
     .btn:hover{transform:translateY(-1px)}
 
     .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:28px}
-    .card{background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    .card{background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
       border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding:18px; box-shadow: var(--shadow)}
     .card h3{margin:6px 0 8px; font-size:18px}
     .card p{margin:0; color:var(--muted)}
 
-    .section{margin-top:56px}
-    .section h2{font-size:26px; margin:0 0 12px}
+    /* Features – leicht heller Blaustich */
+    .section-features{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(10,132,255,.06) 120%)}
+
+    /* Downloads – bläuliche Fläche */
+    .section-downloads{background:linear-gradient(180deg, #0B0C0F, #0F1420)}
     .downloads{display:grid; grid-template-columns:1fr 1fr; gap:16px}
-    .dl{background:var(--bg-2); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:16px}
+    .dl{background:#111621; border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:16px}
     .dl strong{display:block; margin-bottom:6px}
 
-    footer{margin-top:80px; padding-top:32px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted); font-size:14px}
+    /* Tutorials – zurück ins dunklere */
+    .section-tutorials{background:linear-gradient(180deg, #0F1420, #0B0C0F)}
 
-    /* responsiveness */
+    footer{padding:36px 20px; color:var(--muted); font-size:14px; border-top:1px solid rgba(255,255,255,.08); text-align:center}
+
+    /* Responsiv */
     @media (max-width: 900px){
-      .hero{grid-template-columns:1fr}
+      .hero-grid{grid-template-columns:1fr}
       .card-grid{grid-template-columns:1fr}
       .downloads{grid-template-columns:1fr}
       nav{display:none}
+      .logo{width:48px; height:48px}
     }
   </style>
 </head>
 <body>
-  <div class="grid-overlay" aria-hidden="true"></div>
+  <!-- Animierter Hintergrund -->
+  <div class="bg-anim" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div class="grid" aria-hidden="true"></div>
+
+  <!-- Header -->
   <div class="container">
     <header>
-      
-        <img class="logo" src="assets/Logo.png" alt="QSync Logo">
-   
+      <a class="brand" href="#">
+        <!-- Logo allein (transparenter PNG oder SVG empfohlen) -->
+        <img class="logo" src="assets/Logo_transparent.png" alt="QSync Logo">
+        <div>
+          <div class="title">QSync Solutions</div>
+          <div class="subtitle">Code · Connect · Secure</div>
+        </div>
+      </a>
       <nav>
         <a href="#downloads">Downloads</a>
         <a href="#tutorials">Tutorials</a>
         <a href="https://github.com/QuantaSync-Solutions/tutorial-files" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </header>
+  </div>
 
-    <section class="hero">
-      <div>
-        <h1>Downloads & Ressourcen für deine IT-Reise</h1>
-        <p>Alles, was du für die QSync Tutorials brauchst: Beispielcode, Projektdateien und Schritt‑für‑Schritt‑Guides zu Programmierung, Datenbanken, Netzwerken, Cloud & Security.</p>
-        <div class="cta">
-          <a class="btn btn-primary" href="https://github.com/QuantaSync-Solutions/tutorial-files/releases/latest" target="_blank" rel="noopener">⬇️ Neueste Dateien (Release)</a>
-          <a class="btn btn-ghost" href="#tutorials">▶️ Zu den Tutorials</a>
+  <!-- HERO -->
+  <section>
+    <span class="seg top"></span>
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <h1>Downloads & Ressourcen für deine IT‑Reise</h1>
+          <p class="lead">Alles, was du für die QSync Tutorials brauchst: Beispielcode, Projektdateien und Schritt‑für‑Schritt‑Guides zu Programmierung, Datenbanken, Netzwerken, Cloud & Security.</p>
+          <div class="cta">
+            <a class="btn btn-primary" href="https://github.com/QuantaSync-Solutions/tutorial-files/releases/latest" target="_blank" rel="noopener">⬇️ Neueste Dateien (Release)</a>
+            <a class="btn btn-ghost" href="#tutorials">▶️ Zu den Tutorials</a>
+          </div>
         </div>
-        <div class="card-grid">
-          <article class="card">
-            <h3>🚀 Schnellstart</h3>
-            <p>Linux‑VM Setup, Developer‑Tools und erste Schritte – in wenigen Minuten startklar.</p>
-          </article>
-          <article class="card">
-            <h3>⚙️ Projekte</h3>
-            <p>Web‑Apps, Datenbanken, Network‑Labs & Cloud‑Deployments – sauber dokumentiert.</p>
-          </article>
-          <article class="card">
-            <h3>🔒 Best Practices</h3>
-            <p>Security‑Basics, sichere Defaults und nützliche Checklisten für deine Umgebungen.</p>
-          </article>
+        <div aria-hidden="true">
+          <!-- Feature-Karte rechts: schlicht, ohne Logo-Hintergrund -->
+          <div style="background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding:22px; box-shadow: var(--shadow); max-width:420px; margin:0 auto;">
+            <div style="width:92px;height:92px;border-radius:50%; margin:8px auto 16px; background:radial-gradient(#0A84FF,#003e7a); opacity:.9;"></div>
+            <div style="height:14px;border-radius:8px;background:#0f1114;margin:10px 0"></div>
+            <div style="height:14px;border-radius:8px;background:#0f1114;margin:10px 0"></div>
+            <div style="height:14px;border-radius:8px;background:#0f1114;margin:10px 0 18px"></div>
+            <a class="btn btn-primary" href="#downloads" style="width:100%;justify-content:center">⬇️ Downloads</a>
+          </div>
         </div>
       </div>
-      <div aria-hidden="true">
-        <!-- simple decorative panel -->
-        <svg viewBox="0 0 400 480" width="100%" height="auto" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,.6));">
-          <defs>
-            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stop-color="#0A84FF"/>
-              <stop offset="1" stop-color="#00BFFF"/>
-            </linearGradient>
-          </defs>
-          <rect x="20" y="20" width="360" height="440" rx="22" fill="url(#g)" opacity=".12" stroke="#1495ff33" />
-          <g opacity=".6" stroke="#ffffff18">
-            <circle cx="200" cy="120" r="68" fill="#0A84FF18" />
-            <rect x="80" y="220" width="240" height="60" rx="10" />
-            <rect x="80" y="300" width="240" height="60" rx="10" />
-            <rect x="80" y="380" width="160" height="40" rx="10" />
-          </g>
-        </svg>
-      </div>
-    </section>
+    </div>
+    <span class="seg bot"></span>
+  </section>
 
-    <section id="downloads" class="section">
-      <h2>Direkt‑Downloads</h2>
+  <!-- FEATURES -->
+  <section class="section-features">
+    <span class="seg top"></span>
+    <div class="container">
+      <div class="card-grid">
+        <article class="card">
+          <h3>🚀 Schnellstart</h3>
+          <p>Linux‑VM Setup, Developer‑Tools und erste Schritte – in wenigen Minuten startklar.</p>
+        </article>
+        <article class="card">
+          <h3>⚙️ Projekte</h3>
+          <p>Web‑Apps, Datenbanken, Network‑Labs & Cloud‑Deployments – sauber dokumentiert.</p>
+        </article>
+        <article class="card">
+          <h3>🔒 Best Practices</h3>
+          <p>Security‑Basics, sichere Defaults und nützliche Checklisten für deine Umgebungen.</p>
+        </article>
+      </div>
+    </div>
+    <span class="seg bot"></span>
+  </section>
+
+  <!-- DOWNLOADS -->
+  <section id="downloads" class="section-downloads">
+    <span class="seg top"></span>
+    <div class="container">
+      <h2 style="margin:0 0 12px">Direkt‑Downloads</h2>
       <div class="downloads">
         <div class="dl">
           <strong>Tutorial Files (ZIP)</strong>
@@ -159,10 +199,15 @@
           <a class="btn btn-ghost" href="#" onclick="alert('Füge hier später deinen PDF-Link ein.'); return false;">📄 Bald verfügbar</a>
         </div>
       </div>
-    </section>
+    </div>
+    <span class="seg bot"></span>
+  </section>
 
-    <section id="tutorials" class="section">
-      <h2>Tutorial‑Serien</h2>
+  <!-- TUTORIALS -->
+  <section id="tutorials" class="section-tutorials">
+    <span class="seg top"></span>
+    <div class="container">
+      <h2 style="margin:0 0 12px">Tutorial‑Serien</h2>
       <div class="card-grid">
         <article class="card">
           <h3>Linux Basics</h3>
@@ -189,11 +234,12 @@
           <p>HTML/CSS/JS Basics, PHP & MySQL, kleine Deployments.</p>
         </article>
       </div>
-    </section>
+    </div>
+    <span class="seg bot"></span>
+  </section>
 
-    <footer>
-      © 2025 QSync Solutions • <a href="https://github.com/QuantaSync-Solutions/tutorial-files" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:none">GitHub</a>
-    </footer>
-  </div>
+  <footer>
+    © 2025 QSync Solutions • <a href="https://github.com/QuantaSync-Solutions/tutorial-files" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:none">GitHub</a>
+  </footer>
 </body>
 </html>
